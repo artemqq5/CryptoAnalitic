@@ -2,6 +2,7 @@ package com.student.cryptoanalitics.data.api
 
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -13,14 +14,14 @@ interface CryptoAPI {
     }
 
     @GET("currencies/{coin}")
-    fun getCoinHtmlByAPI(
+    suspend fun getCoinHtmlByAPI(
         @Path("coin") coinName: String
-    ): Call<String>
+    ): Response<String>
 
     @GET("/")
-    fun getCryptoCurrenciesHTMLByAPI(
+    suspend fun getCryptoCurrenciesHTMLByAPI(
         @Query("page") page: Int
-    ): Call<String>
+    ): Response<String>
 
 
 }

@@ -9,11 +9,13 @@ import com.student.cryptoanalitics.data.api.CryptoAPI.Companion.BASE_URL_CRYPTO
 import com.student.cryptoanalitics.domain.repositories.CryptoRepository
 import com.student.cryptoanalitics.domain.usecases.GetCoinHTMLUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCryptoCurrenciesHTMLUseCase
+import com.student.cryptoanalitics.presentation.vm.PublicCoinsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -28,7 +30,7 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(listOf(repositoriesModule, useCasesModule, networkModule))
+            modules(listOf(repositoriesModule, useCasesModule, networkModule, viewModelModule))
         }
     }
 
@@ -55,6 +57,10 @@ class App : Application() {
         single<CryptoAPI> {
             get<Retrofit>().create(CryptoAPI::class.java)
         }
+    }
+
+    private val viewModelModule = module {
+        viewModel { PublicCoinsViewModel(get()) }
     }
 
     companion object {

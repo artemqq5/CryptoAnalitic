@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.student.cryptoanalitics.R
 import com.student.cryptoanalitics.databinding.FragmentMainBinding
 import com.student.cryptoanalitics.domain.usecases.GetCoinHTMLUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCryptoCurrenciesHTMLUseCase
@@ -29,5 +31,9 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        test.getCoinData("solana")
 //        test2.getCoinsList(2)
+
+        binding.addCrypto.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_addCryptoFragment)
+        }
     }
 }

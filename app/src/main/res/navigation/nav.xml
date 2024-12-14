@@ -9,5 +9,18 @@
         android:id="@+id/mainFragment"
         android:name="com.student.cryptoanalitics.presentation.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_addCryptoFragment"
+            app:destination="@id/addCryptoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCryptoFragment"
+        android:name="com.student.cryptoanalitics.presentation.AddCryptoFragment"
+        android:label="fragment_add_crypto"
+        tools:layout="@layout/fragment_add_crypto" >
+        <action
+            android:id="@+id/action_addCryptoFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

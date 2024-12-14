@@ -4,6 +4,8 @@ import android.util.Log
 import com.student.cryptoanalitics.App.Companion.mylog
 import com.student.cryptoanalitics.domain.models.CryptoCoinModel
 import com.student.cryptoanalitics.domain.repositories.CryptoRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import retrofit2.Call
@@ -13,21 +15,21 @@ import retrofit2.Response
 
 class GetCoinHTMLUseCase(private val cryptoRepository: CryptoRepository) {
 
-    fun getCoinData(coinName: String) {
-        cryptoRepository.getCoinHtml(coinName).enqueue(object : Callback<String?> {
-            override fun onResponse(call: Call<String?>, response: Response<String?>) {
+    fun getCoinData(coinName: String): Flow<CryptoCoinModel?> {
+        return flow {
+            try {
+                val response = cryptoRepository.getCoinHtml(coinName)
                 if (response.isSuccessful && response.body() != null) {
-                    val htmlContent: String = response.body()!!
-                    parseHtmlCoin(htmlContent)
+                    emit(parseHtmlCoin(response.body()!!))
                 } else {
-                    Log.e("Error", "Response not successful")
+                    emit(null)
+                    throw Exception("Failed to fetch data: ${response.errorBody()?.string()}")
                 }
+            } catch (e: Exception) {
+                emit(null)
+                throw e
             }
-
-            override fun onFailure(call: Call<String?>, t: Throwable) {
-                Log.e("Error", "Request failed: " + t.message)
-            }
-        })
+        }
     }
 
     private fun parseHtmlCoin(content: String): CryptoCoinModel? {

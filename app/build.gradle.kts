@@ -53,6 +53,7 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.scalars)
     implementation (libs.jsoup)
+    implementation(libs.picasso)
 
     implementation(libs.koin.android)
 

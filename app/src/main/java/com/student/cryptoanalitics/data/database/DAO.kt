@@ -16,7 +16,7 @@ interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(coin: CryptoCoinModel)
 
-    @Update
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCoins(coins: List<CryptoCoinModel>)
 
     @Delete

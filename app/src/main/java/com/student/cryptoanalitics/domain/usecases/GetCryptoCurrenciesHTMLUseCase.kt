@@ -6,6 +6,8 @@ import com.student.cryptoanalitics.domain.models.CryptoCoinModel
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrenciesModel
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
 import com.student.cryptoanalitics.domain.repositories.CryptoRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import retrofit2.Call
@@ -15,24 +17,24 @@ import retrofit2.Response
 
 class GetCryptoCurrenciesHTMLUseCase(private val cryptoRepository: CryptoRepository) {
 
-    fun getCoinsList(page: Int) {
-        cryptoRepository.getCryptoCurrenciesHtml(page).enqueue(object : Callback<String?> {
-            override fun onResponse(call: Call<String?>, response: Response<String?>) {
+    fun getCoinsList(page: Int): Flow<CryptoCurrenciesModel?> {
+        return flow {
+            try {
+                val response = cryptoRepository.getCryptoCurrenciesHtml(page)
                 if (response.isSuccessful && response.body() != null) {
-                    val htmlContent: String = response.body()!!
-                    parseHtmlCryptoCurrencies(htmlContent)
+                    emit(parseHtmlCryptoCurrencies(response.body()!!))
                 } else {
-                    Log.e("Error", "Response not successful")
+                    emit(null)
+                    throw Exception("Failed to fetch data: ${response.errorBody()?.string()}")
                 }
+            } catch (e: Exception) {
+                emit(null)
+                throw e
             }
-
-            override fun onFailure(call: Call<String?>, t: Throwable) {
-                Log.e("Error", "Request failed: " + t.message)
-            }
-        })
+        }
     }
 
-    private fun parseHtmlCryptoCurrencies(content: String): List<CryptoCurrencyModel>? {
+    private fun parseHtmlCryptoCurrencies(content: String): CryptoCurrenciesModel? {
         return try {
             val document: Document = Jsoup.parse(content)
 
@@ -46,12 +48,14 @@ class GetCryptoCurrenciesHTMLUseCase(private val cryptoRepository: CryptoReposit
             val cryptoCoins = rows.mapNotNull { row ->
                 val coinName = row.selectFirst("p.coin-item-name")?.text() // Назва монети
                 val marketPrice = row.selectFirst("div.sc-b3fc6b7-0 span")?.text() // Ціна монети
+                val coinImg = row.selectFirst("div.sc-65e7f566-0 img")?.attr("src").toString()
 
                 // Перевіряємо, чи знайдено потрібні дані
                 if (coinName != null && marketPrice != null) {
                     CryptoCurrencyModel(
                         coinName = coinName,
-                        coinPrice = marketPrice
+                        coinPrice = marketPrice,
+                        coinImg = coinImg
                     )
                 } else {
                     null // Пропускаємо, якщо дані не знайдено
@@ -60,7 +64,7 @@ class GetCryptoCurrenciesHTMLUseCase(private val cryptoRepository: CryptoReposit
 
             // Логуємо результат
             mylog(cryptoCoins)
-            cryptoCoins
+            CryptoCurrenciesModel(cryptoCoins)
         } catch (e: Exception) {
             mylog(e)
             null
