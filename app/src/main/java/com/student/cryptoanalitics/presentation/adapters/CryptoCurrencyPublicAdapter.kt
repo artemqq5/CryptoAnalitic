@@ -20,10 +20,7 @@ class CryptoCurrencyPublicAdapter(val click: CryptoCurrencyPublicClick) :
             binding.marketPrice.text = crypto.coinPrice
             Picasso.get().load(crypto.coinImg).into(binding.cryptoImg)
 
-
-            binding.addCrypto.setOnClickListener {
-                click.addCrypto(crypto)
-            }
+            click.addCrypto(binding.addCrypto, crypto)
         }
     }
 

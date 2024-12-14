@@ -3,6 +3,7 @@ package com.student.cryptoanalitics.presentation.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrenciesModel
+import com.student.cryptoanalitics.domain.usecases.CheckCoinExistUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCryptoCurrenciesHTMLUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class PublicCoinsViewModel(
-    private val getCryptoCurrenciesHTMLUseCase: GetCryptoCurrenciesHTMLUseCase
+    private val getCryptoCurrenciesHTMLUseCase: GetCryptoCurrenciesHTMLUseCase,
+    private val checkCoinExistUseCase: CheckCoinExistUseCase
 ): ViewModel() {
 
     private val _coins = MutableStateFlow<CryptoCurrenciesModel?>(CryptoCurrenciesModel(emptyList()))
@@ -44,6 +46,12 @@ class PublicCoinsViewModel(
             }
         }
 
+    }
+
+    fun coinExist(coinName: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            callback(checkCoinExistUseCase.checkCoinExist(coinName))
+        }
     }
 
 }

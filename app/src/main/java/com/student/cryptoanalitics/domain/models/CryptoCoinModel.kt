@@ -7,6 +7,6 @@ data class CryptoCoinModel(
     val volMktCap: String?,
     val totalSupply: String?,
     val circulatingSupply: String?,
-    val marketPrice: String?,
-    val coinName: String?
+    val marketPrice: String,
+    val coinName: String
 )

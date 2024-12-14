@@ -42,8 +42,16 @@ class GetCoinHTMLUseCase(private val cryptoRepository: CryptoRepository) {
             val volMktCap = document.selectFirst("dt:contains(Vol/Mkt Cap (24h)) + dd")?.text()
             val totalSupply = document.selectFirst("dt:contains(Total supply) + dd span")?.text()
             val circulatingSupply = document.selectFirst("dt:contains(Circulating supply) + dd span")?.text()
-            val marketPrice = document.selectFirst("span[data-test='text-cdp-price-display']")?.text()
-            val coinName = document.selectFirst("span[data-role='coin-name']")?.attr("title")
+
+            val marketPrice = runCatching {
+                document.selectFirst("span[data-test='text-cdp-price-display']")?.text()
+                    ?: throw Exception("price is null")
+            }.getOrElse { throw Exception("Failed to get market price: ${it.message}") }
+
+            val coinName = runCatching {
+                document.selectFirst("span[data-role='coin-name']")?.attr("title")
+                    ?: throw Exception("name is null")
+            }.getOrElse { throw Exception("Failed to get coin name: ${it.message}") }
 
             val model = CryptoCoinModel(
                 marketCap = marketCap,
@@ -55,7 +63,6 @@ class GetCoinHTMLUseCase(private val cryptoRepository: CryptoRepository) {
                 marketPrice = marketPrice,
                 coinName = coinName
             )
-            mylog(model)
             model
         } catch (e: Exception) {
             mylog(e)

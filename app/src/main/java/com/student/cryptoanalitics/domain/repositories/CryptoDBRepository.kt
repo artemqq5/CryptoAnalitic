@@ -5,8 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Response
 
-interface CryptoRepository {
-
-    suspend fun getCoinHtml(coinName: String): Response<String>
-    suspend fun getCryptoCurrenciesHtml(page: Int): Response<String>
+interface CryptoDBRepository {
+    suspend fun addNewCoin(coin: CryptoCoinModel)
+    suspend fun checkCoinExist(coinName: String): CryptoCoinModel?
 }

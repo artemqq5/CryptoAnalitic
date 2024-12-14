@@ -6,23 +6,27 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import com.student.cryptoanalitics.domain.models.CryptoCoinModel
-import kotlinx.coroutines.flow.Flow
+import com.student.cryptoanalitics.data.database.table.CoinsTable
 
 @Dao
 interface DAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(coin: CryptoCoinModel)
+    suspend fun insert(coin: CoinsTable)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateCoins(coins: List<CryptoCoinModel>)
+    suspend fun updateCoins(coins: List<CoinsTable>)
 
     @Delete
-    suspend fun delete(coin: CryptoCoinModel)
+    suspend fun delete(coin: CoinsTable)
 
     @Query("SELECT * FROM coins")
-    suspend fun getCoinsWithPagination(): PagingSource<Int, CryptoCoinModel>
+    fun getCoinsWithPagination(): PagingSource<Int, CoinsTable>
+
+    @Query("SELECT * FROM coins WHERE coinName =:coinName COLLATE NOCASE")
+    suspend fun getCoin(coinName: String): CoinsTable?
+
+    @Query("SELECT * FROM coins")
+    suspend fun getAllCoins(): List<CoinsTable>
 
 }

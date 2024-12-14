@@ -62,8 +62,7 @@ class GetCryptoCurrenciesHTMLUseCase(private val cryptoRepository: CryptoReposit
                 }
             }
 
-            // Логуємо результат
-            mylog(cryptoCoins)
+//            mylog(cryptoCoins)
             CryptoCurrenciesModel(cryptoCoins)
         } catch (e: Exception) {
             mylog(e)

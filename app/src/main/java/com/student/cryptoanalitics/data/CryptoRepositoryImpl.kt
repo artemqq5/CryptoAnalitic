@@ -1,6 +1,7 @@
 package com.student.cryptoanalitics.data
 
 import com.student.cryptoanalitics.data.api.CryptoAPI
+import com.student.cryptoanalitics.domain.models.CryptoCoinModel
 import com.student.cryptoanalitics.domain.repositories.CryptoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,4 +16,5 @@ class CryptoRepositoryImpl(private val cryptoAPI: CryptoAPI) : CryptoRepository 
     override suspend fun getCryptoCurrenciesHtml(page: Int): Response<String> {
         return cryptoAPI.getCryptoCurrenciesHTMLByAPI(page)
     }
+
 }

@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.student.cryptoanalitics.App.Companion.mylog
+import com.google.android.material.button.MaterialButton
 import com.student.cryptoanalitics.R
 import com.student.cryptoanalitics.databinding.FragmentAddCryptoBinding
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
@@ -24,6 +24,7 @@ class AddCryptoFragment : Fragment(), CryptoCurrencyPublicClick {
     private lateinit var binding: FragmentAddCryptoBinding
 
     private val publicCoinsViewModel: PublicCoinsViewModel by viewModel()
+//    private val publicCoinsViewModel: PublicCoinsViewModel by viewModel()
 
     private val cryptoAdapter by lazy {
         CryptoCurrencyPublicAdapter(this)
@@ -70,7 +71,13 @@ class AddCryptoFragment : Fragment(), CryptoCurrencyPublicClick {
         }
     }
 
-    override fun addCrypto(cryptoCurrencyModel: CryptoCurrencyModel) {
-        super.addCrypto(cryptoCurrencyModel)
+    override fun addCrypto(button: MaterialButton, cryptoCurrencyModel: CryptoCurrencyModel) {
+        publicCoinsViewModel.coinExist(cryptoCurrencyModel.coinName) {
+            button.visibility = if (it) View.INVISIBLE else View.VISIBLE
+        }
+
+        button.setOnClickListener {
+
+        }
     }
 }

@@ -45,10 +45,11 @@ android {
 dependencies {
     implementation(libs.androidx.datastore.preferences)
 
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.paging)
-    annotationProcessor(libs.androidx.room.compiler)
+    implementation (libs.androidx.room.runtime)
+    //noinspection KaptUsageInsteadOfKsp
+    kapt (libs.androidx.room.compiler)
+    implementation (libs.room.ktx)
+    implementation (libs.room.paging)
 
     implementation (libs.retrofit)
     implementation (libs.converter.scalars)

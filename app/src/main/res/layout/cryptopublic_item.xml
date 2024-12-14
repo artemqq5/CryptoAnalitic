@@ -15,9 +15,10 @@
 
         <ImageView
             android:id="@+id/cryptoImg"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:src="@drawable/img"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,9 +30,8 @@
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/cryptoImg"
             app:layout_constraintStart_toEndOf="@+id/cryptoImg"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cryptoImg"
             tools:text="Bitcoin" />
 
         <TextView
@@ -41,8 +41,9 @@
             android:textColor="#008000"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/cryptoImg"
             app:layout_constraintStart_toStartOf="@+id/coinName"
-            app:layout_constraintTop_toBottomOf="@+id/cryptoImg"
+            app:layout_constraintTop_toBottomOf="@+id/coinName"
             tools:text="$19,999.99" />
 
         <com.google.android.material.button.MaterialButton
@@ -53,7 +54,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/marketPrice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/coinName"
-            tools:text="Додати" />
+            android:text="Додати" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
