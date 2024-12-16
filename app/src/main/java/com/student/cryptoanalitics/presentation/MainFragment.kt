@@ -10,18 +10,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
 import com.student.cryptoanalitics.R
 import com.student.cryptoanalitics.databinding.FragmentMainBinding
 import com.student.cryptoanalitics.domain.models.CryptoCoinModel
-import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
 import com.student.cryptoanalitics.presentation.adapters.my_coins.CryptoCoinsPrivateAdapter
 import com.student.cryptoanalitics.presentation.adapters.my_coins.CryptoCoinsPrivateClick
 import com.student.cryptoanalitics.presentation.vm.LoadCryptoCoinsViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : Fragment(), CryptoCoinsPrivateClick {
 
@@ -49,7 +46,8 @@ class MainFragment : Fragment(), CryptoCoinsPrivateClick {
 
         viewLifecycleOwner.lifecycleScope.launch {
             loadCryptoCoinsViewModel.isLoading.collect { isLoading ->
-                if (isLoading) View.VISIBLE else View.GONE
+                binding.progressBar.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
             }
         }
 
@@ -66,7 +64,11 @@ class MainFragment : Fragment(), CryptoCoinsPrivateClick {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            loadCryptoCoinsViewModel.loadCoinsData(true)
+            if(!loadCryptoCoinsViewModel.isLoading.value) {
+                loadCryptoCoinsViewModel.loadCoinsData(true)
+            }else {
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
 
         binding.recyclerCrypto.addOnScrollListener(object : RecyclerView.OnScrollListener() {

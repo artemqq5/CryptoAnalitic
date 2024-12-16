@@ -34,18 +34,17 @@ class LoadCryptoCoinsViewModel(
     }
 
     fun loadCoinsData(isRefresh: Boolean = false) {
-        if (_isLoading.value) return
+        if (_isLoading.value || _isRefreshing.value) return
 
         if (isRefresh) {
             currentPage = 1
             coinsFlowMutable.value = emptyList()
             _isRefreshing.value = true
+        } else {
+            _isLoading.value = true
         }
 
-
         viewModelScope.launch(Dispatchers.IO) {
-            _isLoading.value = true
-
             getPagedCoinsUseCase.execute(currentPage).collect { listData ->
 
                 val updatedCoinsList = mutableListOf<CryptoCoinModel>()

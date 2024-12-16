@@ -11,9 +11,7 @@ import com.student.cryptoanalitics.domain.repositories.CryptoDBRepository
 class CryptoDBRepositoryImpl(private val db: DAO) : CryptoDBRepository {
 
     override suspend fun getAllCoinPagination(offset: Int): List<CoinsTable> {
-        val result = db.getCoinsWithPagination(offset)
-        mylog(result)
-        return result
+        return db.getCoinsWithPagination(offset)
     }
 
     override suspend fun addNewCoin(coin: CoinsTable): Long {
