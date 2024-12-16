@@ -11,11 +11,5 @@ import androidx.room.PrimaryKey
 data class CoinsTable(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "coinName") val coinName: String,
-    @ColumnInfo(name = "coinPrice") val coinPrice: String,
-    @ColumnInfo(name = "marketCap") val marketCap: String?,
-    @ColumnInfo(name = "volume24h") val volume24h: String?,
-    @ColumnInfo(name = "fdv") val fdv: String?,
-    @ColumnInfo(name = "volMktCap") val volMktCap: String?,
-    @ColumnInfo(name = "totalSupply") val totalSupply: String?,
-    @ColumnInfo(name = "circulatingSupply") val circulatingSupply: String?,
+    @ColumnInfo(name = "coinPrice") val coinPrice: Float,
 )

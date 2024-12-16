@@ -1,36 +1,26 @@
 package com.student.cryptoanalitics.domain.usecases
 
-import android.util.Log
 import com.student.cryptoanalitics.App.Companion.mylog
 import com.student.cryptoanalitics.domain.models.CryptoCoinModel
-import com.student.cryptoanalitics.domain.repositories.CryptoRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.student.cryptoanalitics.domain.repositories.CryptoHtmlRepository
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-class GetCoinHTMLUseCase(private val cryptoRepository: CryptoRepository) {
+class GetCoinHTMLUseCase(private val cryptoHtmlRepository: CryptoHtmlRepository) {
 
-    fun getCoinData(coinName: String): Flow<CryptoCoinModel?> {
-        return flow {
-            try {
-                val response = cryptoRepository.getCoinHtml(coinName)
+    suspend fun getCoinData(coinName: String): CryptoCoinModel? {
+        return try {
+                val response = cryptoHtmlRepository.getCoinHtml(coinName)
                 if (response.isSuccessful && response.body() != null) {
-                    emit(parseHtmlCoin(response.body()!!))
+                    parseHtmlCoin(response.body()!!)
                 } else {
-                    emit(null)
                     throw Exception("Failed to fetch data: ${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
-                emit(null)
-                throw e
+                return null
             }
         }
-    }
 
     private fun parseHtmlCoin(content: String): CryptoCoinModel? {
         return try {
@@ -53,6 +43,9 @@ class GetCoinHTMLUseCase(private val cryptoRepository: CryptoRepository) {
                     ?: throw Exception("name is null")
             }.getOrElse { throw Exception("Failed to get coin name: ${it.message}") }
 
+            val coinImg = document.selectFirst("div.sc-65e7f566-0 img")?.attr("src").toString()
+
+
             val model = CryptoCoinModel(
                 marketCap = marketCap,
                 volume24h = volume24h,
@@ -61,7 +54,8 @@ class GetCoinHTMLUseCase(private val cryptoRepository: CryptoRepository) {
                 totalSupply = totalSupply,
                 circulatingSupply = circulatingSupply,
                 marketPrice = marketPrice,
-                coinName = coinName
+                coinName = coinName,
+                coinImg = coinImg
             )
             model
         } catch (e: Exception) {

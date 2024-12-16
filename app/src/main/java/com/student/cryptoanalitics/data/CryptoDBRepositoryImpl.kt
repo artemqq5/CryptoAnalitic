@@ -1,63 +1,27 @@
 package com.student.cryptoanalitics.data
 
+import androidx.paging.PagingSource
 import com.student.cryptoanalitics.App.Companion.mylog
 import com.student.cryptoanalitics.data.database.DAO
 import com.student.cryptoanalitics.data.database.table.CoinsTable
 import com.student.cryptoanalitics.domain.models.CryptoCoinModel
+import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
 import com.student.cryptoanalitics.domain.repositories.CryptoDBRepository
 
 class CryptoDBRepositoryImpl(private val db: DAO) : CryptoDBRepository {
-    override suspend fun addNewCoin(coin: CryptoCoinModel) {
-        return db.insert(coin.toCoinsTable())
+
+    override suspend fun getAllCoinPagination(offset: Int): List<CoinsTable> {
+        val result = db.getCoinsWithPagination(offset)
+        mylog(result)
+        return result
     }
 
-    override suspend fun checkCoinExist(coinName: String): CryptoCoinModel? {
-        db.insert(
-            CoinsTable(
-                coinName = "coinName",
-                coinPrice = "coinPrice",
-                marketCap = "marketCap",
-                volume24h = "volume24h",
-                fdv = "fdv",
-                volMktCap = "volMktCap",
-                totalSupply = "totalSupply",
-                circulatingSupply = "circulatingSupply"
-            )
-        )
-
-        val allCoins = db.getAllCoins()
-        mylog("All coins in DB: ${allCoins}")
-
-        val res = db.getCoin(coinName)
-        mylog(coinName)
-        mylog(res.toString())
-        return res?.toCryptoCoinModel()
+    override suspend fun addNewCoin(coin: CoinsTable): Long {
+        return db.insert(coin)
     }
 
-
-    private fun CoinsTable.toCryptoCoinModel(): CryptoCoinModel {
-        return CryptoCoinModel(
-            coinName = coinName,
-            marketPrice = coinPrice,
-            marketCap = marketCap,
-            volume24h = volume24h,
-            fdv = fdv,
-            volMktCap = volMktCap,
-            totalSupply = totalSupply,
-            circulatingSupply = circulatingSupply
-        )
+    override suspend fun checkCoinExist(coinName: String): CoinsTable? {
+        return db.getCoin(coinName)
     }
 
-    private fun CryptoCoinModel.toCoinsTable(): CoinsTable {
-        return CoinsTable(
-            coinName = coinName,
-            coinPrice = marketPrice,
-            marketCap = marketCap,
-            volume24h = volume24h,
-            fdv = fdv,
-            volMktCap = volMktCap,
-            totalSupply = totalSupply,
-            circulatingSupply = circulatingSupply
-        )
-    }
 }

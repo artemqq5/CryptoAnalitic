@@ -12,7 +12,7 @@ import com.student.cryptoanalitics.data.database.table.CoinsTable
 interface DAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(coin: CoinsTable)
+    suspend fun insert(coin: CoinsTable): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCoins(coins: List<CoinsTable>)
@@ -20,13 +20,10 @@ interface DAO {
     @Delete
     suspend fun delete(coin: CoinsTable)
 
-    @Query("SELECT * FROM coins")
-    fun getCoinsWithPagination(): PagingSource<Int, CoinsTable>
+    @Query("SELECT * FROM coins ORDER BY coinPrice DESC LIMIT 5 OFFSET :offset COLLATE NOCASE")
+    suspend fun getCoinsWithPagination(offset: Int): List<CoinsTable>
 
     @Query("SELECT * FROM coins WHERE coinName =:coinName COLLATE NOCASE")
     suspend fun getCoin(coinName: String): CoinsTable?
-
-    @Query("SELECT * FROM coins")
-    suspend fun getAllCoins(): List<CoinsTable>
 
 }

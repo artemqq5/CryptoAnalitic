@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:backgroundTint="@color/bg"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -14,23 +15,24 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:id="@+id/coinImg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/img"
+            app:layout_constraintBottom_toBottomOf="@+id/coinName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/coinName" />
 
         <TextView
             android:id="@+id/coinName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:textColor="#000"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/coinImg"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Bitcoin" />
 
@@ -39,13 +41,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#008000"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
+            android:layout_marginEnd="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/coinName"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/radioButton"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/coinName"
-            app:layout_constraintTop_toTopOf="@+id/coinName"
+            app:layout_constraintTop_toTopOf="@+id/coinImg"
             app:layout_constraintVertical_bias="0.0"
             tools:text="$19,999.99" />
 
@@ -53,12 +56,23 @@
             android:id="@+id/totalSupply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#817777"
-            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:textColor="#262525"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/coinImg"
             app:layout_constraintEnd_toEndOf="@+id/marketPrice"
-            app:layout_constraintStart_toStartOf="@+id/marketPrice"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            tools:text="Total 21M" />
+            app:layout_constraintTop_toBottomOf="@+id/marketPrice"
+            tools:text="Total 19.79M BTC" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/coinImg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/coinImg" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

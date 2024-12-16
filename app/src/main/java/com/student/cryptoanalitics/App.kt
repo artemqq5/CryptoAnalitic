@@ -7,17 +7,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.student.cryptoanalitics.data.CryptoDBRepositoryImpl
-import com.student.cryptoanalitics.data.CryptoRepositoryImpl
+import com.student.cryptoanalitics.data.CryptoHtmlHtmlRepositoryImpl
 import com.student.cryptoanalitics.data.api.CryptoAPI
 import com.student.cryptoanalitics.data.api.CryptoAPI.Companion.BASE_URL_CRYPTO
 import com.student.cryptoanalitics.data.database.CryptoDataBase
 import com.student.cryptoanalitics.data.database.CryptoDataBase.Companion.DATABASE_NAME
 import com.student.cryptoanalitics.data.database.DAO
 import com.student.cryptoanalitics.domain.repositories.CryptoDBRepository
-import com.student.cryptoanalitics.domain.repositories.CryptoRepository
+import com.student.cryptoanalitics.domain.repositories.CryptoHtmlRepository
+import com.student.cryptoanalitics.domain.usecases.AddCoinUseCase
 import com.student.cryptoanalitics.domain.usecases.CheckCoinExistUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCoinHTMLUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCryptoCurrenciesHTMLUseCase
+import com.student.cryptoanalitics.domain.usecases.GetPagedCoinsUseCase
+import com.student.cryptoanalitics.presentation.vm.InsertCoinsViewModel
+import com.student.cryptoanalitics.presentation.vm.LoadCryptoCoinsViewModel
 import com.student.cryptoanalitics.presentation.vm.PublicCoinsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -50,19 +54,25 @@ class App : Application() {
     }
 
     private val repositoriesModule = module {
-        single<CryptoRepository> { CryptoRepositoryImpl(cryptoAPI = get()) }
+        single<CryptoHtmlRepository> { CryptoHtmlHtmlRepositoryImpl(cryptoAPI = get()) }
         single<CryptoDBRepository> { CryptoDBRepositoryImpl(db = get()) }
     }
 
     private val useCasesModule = module {
         factory {
-            GetCoinHTMLUseCase(get<CryptoRepository>())
+            GetCoinHTMLUseCase(get<CryptoHtmlRepository>())
         }
         factory {
-            GetCryptoCurrenciesHTMLUseCase(get<CryptoRepository>())
+            GetCryptoCurrenciesHTMLUseCase(get<CryptoHtmlRepository>())
         }
         factory {
             CheckCoinExistUseCase(get<CryptoDBRepository>())
+        }
+        factory {
+            AddCoinUseCase(get<CryptoDBRepository>())
+        }
+        factory {
+            GetPagedCoinsUseCase(get<CryptoDBRepository>())
         }
     }
 
@@ -71,6 +81,18 @@ class App : Application() {
             PublicCoinsViewModel(
                 getCryptoCurrenciesHTMLUseCase = get(),
                 checkCoinExistUseCase = get()
+            )
+        }
+
+        viewModel {
+            InsertCoinsViewModel(
+                addCoinUseCase = get()
+            )
+        }
+        viewModel {
+            LoadCryptoCoinsViewModel(
+                getPagedCoinsUseCase = get(),
+                getCoinHTMLUseCase = get()
             )
         }
     }
@@ -96,7 +118,7 @@ class App : Application() {
             ).addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("INSERT INTO coins (coinName, coinPrice) VALUES ('Bitcoin', '50000')")
+                    db.execSQL("INSERT INTO coins (coinName, coinPrice) VALUES ('Bitcoin', '100000')")
                     db.execSQL("INSERT INTO coins (coinName, coinPrice) VALUES ('Ethereum', '4000')")
                 }
             }).build()

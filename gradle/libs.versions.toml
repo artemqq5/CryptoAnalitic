@@ -20,6 +20,8 @@ roomKtx = "2.6.1"
 roomPaging = "2.6.1"
 roomRuntime = "2.6.1"
 roomCompiler = "2.6.1"
+pagingRuntimeKtx = "3.3.5"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,8 @@ picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
+androidx-paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

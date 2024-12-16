@@ -1,13 +1,10 @@
 package com.student.cryptoanalitics.data
 
 import com.student.cryptoanalitics.data.api.CryptoAPI
-import com.student.cryptoanalitics.domain.models.CryptoCoinModel
-import com.student.cryptoanalitics.domain.repositories.CryptoRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.student.cryptoanalitics.domain.repositories.CryptoHtmlRepository
 import retrofit2.Response
 
-class CryptoRepositoryImpl(private val cryptoAPI: CryptoAPI) : CryptoRepository {
+class CryptoHtmlHtmlRepositoryImpl(private val cryptoAPI: CryptoAPI) : CryptoHtmlRepository {
 
     override suspend fun getCoinHtml(coinName: String): Response<String> {
         return cryptoAPI.getCoinHtmlByAPI(coinName)

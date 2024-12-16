@@ -43,9 +43,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.datastore.preferences)
-
     implementation (libs.androidx.room.runtime)
+    implementation(libs.androidx.swiperefreshlayout)
     //noinspection KaptUsageInsteadOfKsp
     kapt (libs.androidx.room.compiler)
     implementation (libs.room.ktx)

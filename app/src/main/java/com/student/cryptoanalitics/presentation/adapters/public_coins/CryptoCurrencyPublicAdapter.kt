@@ -1,4 +1,4 @@
-package com.student.cryptoanalitics.presentation.adapters
+package com.student.cryptoanalitics.presentation.adapters.public_coins
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.squareup.picasso.Picasso
 import com.student.cryptoanalitics.databinding.CryptopublicItemBinding
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
 
-class CryptoCurrencyPublicAdapter(val click: CryptoCurrencyPublicClick) :
+class CryptoCurrencyPublicAdapter(private val click: CryptoCurrencyPublicClick) :
     ListAdapter<CryptoCurrencyModel, CryptoCurrencyPublicAdapter.CryptoCurrencyViewHolder>(
         CoinsDiffCallback
     ) {
