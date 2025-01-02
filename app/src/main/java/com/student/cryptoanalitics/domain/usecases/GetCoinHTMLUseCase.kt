@@ -2,12 +2,15 @@ package com.student.cryptoanalitics.domain.usecases
 
 import com.student.cryptoanalitics.App.Companion.mylog
 import com.student.cryptoanalitics.domain.models.CryptoCoinModel
+import com.student.cryptoanalitics.domain.repositories.CryptoDBRepository
 import com.student.cryptoanalitics.domain.repositories.CryptoHtmlRepository
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 
-class GetCoinHTMLUseCase(private val cryptoHtmlRepository: CryptoHtmlRepository) {
+class GetCoinHTMLUseCase(
+    private val cryptoHtmlRepository: CryptoHtmlRepository
+) {
 
     suspend fun getCoinData(coinName: String): CryptoCoinModel? {
         return try {

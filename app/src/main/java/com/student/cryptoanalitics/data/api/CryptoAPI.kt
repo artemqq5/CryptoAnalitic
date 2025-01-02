@@ -23,5 +23,4 @@ interface CryptoAPI {
         @Query("page") page: Int
     ): Response<String>
 
-
 }

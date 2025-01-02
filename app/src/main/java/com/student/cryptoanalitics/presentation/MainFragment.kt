@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -89,7 +89,13 @@ class MainFragment : Fragment(), CryptoCoinsPrivateClick {
 
     }
 
-    override fun clickCoin(radioButton: RadioButton, cryptoCoinModel: CryptoCoinModel) {
-
+    override fun clickCoin(cryptoCoinModel: CryptoCoinModel) {
+        val navController = findNavController()
+        if (navController.currentDestination?.id == R.id.mainFragment) {
+            navController.navigate(
+                R.id.action_mainFragment_to_detailCryptoFragment,
+                bundleOf("coin" to cryptoCoinModel)
+            )
+        }
     }
 }

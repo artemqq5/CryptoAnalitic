@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
 }
+
 
 android {
     namespace = "com.student.cryptoanalitics"
@@ -19,6 +22,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+            println("Loaded API_KEY: ${localProperties.getProperty("GEMINI_API_KEY")}")
+        } else {
+            println("local.properties file not found!")
+        }
+        buildConfigField("String", "GEMINI_API_KEY", "\"${localProperties.getProperty("GEMINI_API_KEY")}\"")
     }
 
     buildTypes {
@@ -30,6 +43,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -39,6 +53,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -49,6 +64,8 @@ dependencies {
     kapt (libs.androidx.room.compiler)
     implementation (libs.room.ktx)
     implementation (libs.room.paging)
+
+    implementation(libs.generativeai)
 
     implementation (libs.retrofit)
     implementation (libs.converter.scalars)

@@ -6,5 +6,5 @@ import com.student.cryptoanalitics.domain.models.CryptoCoinModel
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
 
 interface CryptoCoinsPrivateClick {
-    fun clickCoin(radioButton: RadioButton, cryptoCoinModel: CryptoCoinModel)
+    fun clickCoin(cryptoCoinModel: CryptoCoinModel)
 }

@@ -11,14 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.student.cryptoanalitics.App.Companion.mylog
 import com.student.cryptoanalitics.R
 import com.student.cryptoanalitics.databinding.FragmentAddCryptoBinding
 import com.student.cryptoanalitics.domain.models.currencies.CryptoCurrencyModel
 import com.student.cryptoanalitics.presentation.adapters.public_coins.CryptoCurrencyPublicAdapter
 import com.student.cryptoanalitics.presentation.adapters.public_coins.CryptoCurrencyPublicClick
 import com.student.cryptoanalitics.presentation.vm.InsertCoinsViewModel
+import com.student.cryptoanalitics.presentation.vm.LoadCryptoCoinsViewModel
 import com.student.cryptoanalitics.presentation.vm.PublicCoinsViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddCryptoFragment : Fragment(), CryptoCurrencyPublicClick {
@@ -27,6 +30,7 @@ class AddCryptoFragment : Fragment(), CryptoCurrencyPublicClick {
 
     private val publicCoinsViewModel: PublicCoinsViewModel by viewModel()
     private val insertCoinsViewModel: InsertCoinsViewModel by viewModel()
+    private val loadCryptoCoinsViewModel: LoadCryptoCoinsViewModel by activityViewModel()
 
     private val cryptoAdapter by lazy {
         CryptoCurrencyPublicAdapter(this)
@@ -82,6 +86,9 @@ class AddCryptoFragment : Fragment(), CryptoCurrencyPublicClick {
             insertCoinsViewModel.addNewCoin(cryptoCurrencyModel) {
                 if (it) {
                     button.visibility = View.INVISIBLE
+
+                    // update main coins list UI
+                    loadCryptoCoinsViewModel.loadCoinsData(isRefresh = true, immediate = true)
                 } else {
                     Snackbar.make(
                         binding.root,

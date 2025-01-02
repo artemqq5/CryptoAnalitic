@@ -7,22 +7,23 @@
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/back"
         android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="@+id/delete"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/delete" />
 
     <ImageView
         android:id="@+id/coinIcon"
         android:layout_width="48dp"
-        android:layout_marginTop="20dp"
         android:layout_height="48dp"
+        android:layout_marginTop="20dp"
         android:importantForAccessibility="no"
         android:src="@drawable/img"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/delete" />
 
     <TextView
         android:id="@+id/coinName"
@@ -44,6 +45,7 @@
         tools:text="$3,914.23"
         android:textSize="32sp"
         android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:textColor="#000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coinIcon"
@@ -54,7 +56,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#008000"
-        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/marketPrice"
         app:layout_constraintTop_toBottomOf="@+id/marketPrice"
         tools:text="+0.55% (1d)" />
@@ -64,36 +67,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/bg2"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardElevation="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/priceChange">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/marketCapValue"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/marketCapLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#666"
-                android:textSize="14sp"
-                tools:text="Market Cap:" />
-
-            <TextView
-                android:id="@+id/marketCapValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="$471.45B" />
-        </LinearLayout>
+            android:layout_marginStart="8dp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:textSize="16sp"
+            tools:text="$471.45B" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -102,35 +91,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        android:backgroundTint="@color/bg2"
+        app:cardElevation="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView2">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/volume24hValue"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/volume24hLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Volume (24h):"
-                android:textColor="#666"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/volume24hValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                tools:text="$36.06B"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_marginStart="8dp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:textSize="16sp"
+            tools:text="$36.06B" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -138,47 +113,102 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        android:backgroundTint="@color/bg2"
+        app:cardElevation="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/circulatingSupplyValue"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/circulatingSupplyLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Circulating Supply:"
-                android:textColor="#666"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/circulatingSupplyValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                tools:text="120.44M ETH"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_marginStart="8dp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:textSize="16sp"
+            tools:text="120.44M ETH" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_red_dark"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#975D5D"
+        android:text="Видалити"
         app:cornerRadius="10dp"
-        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/bg2"
+        app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView4"
-        tools:text="Видалити" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/aiImage"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/gemini"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="AI Gemini model 1.5"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/aiImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/aiImage"
+                app:layout_constraintTop_toTopOf="@+id/aiImage" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="@+id/aiImage"
+                app:layout_constraintTop_toBottomOf="@+id/aiImage">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginBottom="70dp"
+                    android:indeterminate="true"
+                    app:indicatorColor="#2C81F5" />
+
+                <TextView
+                    android:id="@+id/analiseText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#353232"
+                    android:textSize="16sp"
+                    android:visibility="invisible"
+                    tools:text="Виникла помилка під час аналізу" />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

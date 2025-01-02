@@ -12,4 +12,6 @@ interface CryptoDBRepository {
     suspend fun getAllCoinPagination(offset: Int): List<CoinsTable>
     suspend fun addNewCoin(coin: CoinsTable): Long
     suspend fun checkCoinExist(coinName: String): CoinsTable?
+    suspend fun updatePriceCoin(coins: List<CoinsTable>)
+    suspend fun deleteCoin(coinName: String)
 }

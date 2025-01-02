@@ -5,4 +5,5 @@
 
     <color name="bg">#E6DFDF</color>
     <color name="bg2">#EFEBEB</color>
+    <color name="bg_btn">#5F4234</color>
 </resources>

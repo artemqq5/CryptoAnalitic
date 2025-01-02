@@ -43,9 +43,8 @@
             android:textColor="#008000"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_marginEnd="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/coinName"
-            app:layout_constraintEnd_toStartOf="@+id/radioButton"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/coinName"
             app:layout_constraintTop_toTopOf="@+id/coinImg"
@@ -63,16 +62,5 @@
             app:layout_constraintEnd_toEndOf="@+id/marketPrice"
             app:layout_constraintTop_toBottomOf="@+id/marketPrice"
             tools:text="Total 19.79M BTC" />
-
-        <RadioButton
-            android:id="@+id/radioButton"
-            android:layout_width="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/coinImg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/coinImg" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

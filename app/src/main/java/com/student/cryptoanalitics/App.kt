@@ -1,11 +1,17 @@
 package com.student.cryptoanalitics
 
+
 import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.BlockThreshold
+import com.google.ai.client.generativeai.type.HarmCategory
+import com.google.ai.client.generativeai.type.SafetySetting
+import com.google.ai.client.generativeai.type.generationConfig
 import com.student.cryptoanalitics.data.CryptoDBRepositoryImpl
 import com.student.cryptoanalitics.data.CryptoHtmlHtmlRepositoryImpl
 import com.student.cryptoanalitics.data.api.CryptoAPI
@@ -17,9 +23,14 @@ import com.student.cryptoanalitics.domain.repositories.CryptoDBRepository
 import com.student.cryptoanalitics.domain.repositories.CryptoHtmlRepository
 import com.student.cryptoanalitics.domain.usecases.AddCoinUseCase
 import com.student.cryptoanalitics.domain.usecases.CheckCoinExistUseCase
+import com.student.cryptoanalitics.domain.usecases.DeleteCoinUseCase
+import com.student.cryptoanalitics.domain.usecases.GeminiUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCoinHTMLUseCase
 import com.student.cryptoanalitics.domain.usecases.GetCryptoCurrenciesHTMLUseCase
 import com.student.cryptoanalitics.domain.usecases.GetPagedCoinsUseCase
+import com.student.cryptoanalitics.domain.usecases.UpdateCoinsUseCase
+import com.student.cryptoanalitics.presentation.vm.DeleteCoinsViewModel
+import com.student.cryptoanalitics.presentation.vm.GeminiViewModel
 import com.student.cryptoanalitics.presentation.vm.InsertCoinsViewModel
 import com.student.cryptoanalitics.presentation.vm.LoadCryptoCoinsViewModel
 import com.student.cryptoanalitics.presentation.vm.PublicCoinsViewModel
@@ -47,7 +58,8 @@ class App : Application() {
                     useCasesModule,
                     viewModelModule,
                     networkModule,
-                    databaseModule
+                    databaseModule,
+                    artificialIntelligenceModule
                 )
             )
         }
@@ -74,6 +86,15 @@ class App : Application() {
         factory {
             GetPagedCoinsUseCase(get<CryptoDBRepository>())
         }
+        factory {
+            UpdateCoinsUseCase(get<CryptoDBRepository>())
+        }
+        factory {
+            DeleteCoinUseCase(get<CryptoDBRepository>())
+        }
+        factory {
+            GeminiUseCase(get<GenerativeModel>())
+        }
     }
 
     private val viewModelModule = module {
@@ -92,7 +113,18 @@ class App : Application() {
         viewModel {
             LoadCryptoCoinsViewModel(
                 getPagedCoinsUseCase = get(),
-                getCoinHTMLUseCase = get()
+                getCoinHTMLUseCase = get(),
+                updateCoinsUseCase = get()
+            )
+        }
+        viewModel {
+            DeleteCoinsViewModel(
+                deleteCoinUseCase = get()
+            )
+        }
+        viewModel {
+            GeminiViewModel(
+                geminiUseCase = get()
             )
         }
     }
@@ -126,6 +158,27 @@ class App : Application() {
 
         single<DAO> {
             get<CryptoDataBase>().getDAO()
+        }
+    }
+
+    private val artificialIntelligenceModule = module {
+        single<GenerativeModel> {
+            GenerativeModel(
+                modelName = "gemini-1.5-flash-001",
+                apiKey = BuildConfig.GEMINI_API_KEY,
+                generationConfig = generationConfig {
+                    temperature = 0.15f
+                    topK = 32
+                    topP = 1f
+                    maxOutputTokens = 4096
+                },
+                safetySettings = listOf(
+                    SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.MEDIUM_AND_ABOVE),
+                    SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE),
+                    SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, BlockThreshold.MEDIUM_AND_ABOVE),
+                    SafetySetting(HarmCategory.DANGEROUS_CONTENT, BlockThreshold.MEDIUM_AND_ABOVE),
+                )
+            )
         }
     }
 

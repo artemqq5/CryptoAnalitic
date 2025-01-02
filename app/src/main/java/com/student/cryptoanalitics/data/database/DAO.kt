@@ -17,8 +17,8 @@ interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCoins(coins: List<CoinsTable>)
 
-    @Delete
-    suspend fun delete(coin: CoinsTable)
+    @Query("DELETE FROM coins WHERE coinName =:coinName")
+    suspend fun delete(coinName: String)
 
     @Query("SELECT * FROM coins ORDER BY coinPrice DESC LIMIT 5 OFFSET :offset COLLATE NOCASE")
     suspend fun getCoinsWithPagination(offset: Int): List<CoinsTable>

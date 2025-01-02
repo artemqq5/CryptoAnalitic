@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_addCryptoFragment"
             app:destination="@id/addCryptoFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailCryptoFragment"
+            app:destination="@id/detailCryptoFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCryptoFragment"
@@ -21,6 +24,14 @@
         tools:layout="@layout/fragment_add_crypto" >
         <action
             android:id="@+id/action_addCryptoFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailCryptoFragment"
+        android:name="com.student.cryptoanalitics.presentation.DetailCryptoFragment"
+        android:label="DetailCryptoFragment" >
+        <action
+            android:id="@+id/action_detailCryptoFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

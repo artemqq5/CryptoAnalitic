@@ -2,9 +2,11 @@ package com.student.cryptoanalitics.presentation.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.student.cryptoanalitics.App.Companion.mylog
 import com.student.cryptoanalitics.domain.models.CryptoCoinModel
 import com.student.cryptoanalitics.domain.usecases.GetCoinHTMLUseCase
 import com.student.cryptoanalitics.domain.usecases.GetPagedCoinsUseCase
+import com.student.cryptoanalitics.domain.usecases.UpdateCoinsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class LoadCryptoCoinsViewModel(
     private val getPagedCoinsUseCase: GetPagedCoinsUseCase,
-    private val getCoinHTMLUseCase: GetCoinHTMLUseCase
+    private val getCoinHTMLUseCase: GetCoinHTMLUseCase,
+    private val updateCoinsUseCase: UpdateCoinsUseCase
 ) : ViewModel() {
 
     private val coinsFlowMutable: MutableStateFlow<List<CryptoCoinModel>> =
@@ -33,8 +36,9 @@ class LoadCryptoCoinsViewModel(
         }
     }
 
-    fun loadCoinsData(isRefresh: Boolean = false) {
-        if (_isLoading.value || _isRefreshing.value) return
+    fun loadCoinsData(isRefresh: Boolean = false, immediate: Boolean = false) {
+        if (_isLoading.value || _isRefreshing.value) if (!immediate) return
+
 
         if (isRefresh) {
             currentPage = 1
@@ -54,6 +58,12 @@ class LoadCryptoCoinsViewModel(
                         updatedCoinsList.add(coin)
                     }
                 }
+
+                // here updating database *********
+                viewModelScope.launch(Dispatchers.IO) {
+                    updateCoinsUseCase.updateCoinsDB(updatedCoinsList)
+                }
+                // here updating database *********
 
                 val updatedList = coinsFlowMutable.value + updatedCoinsList
                 coinsFlowMutable.value = updatedList.distinctBy { coin -> coin.marketPrice!!.split("$")[1].replace(",", "").toFloat() }

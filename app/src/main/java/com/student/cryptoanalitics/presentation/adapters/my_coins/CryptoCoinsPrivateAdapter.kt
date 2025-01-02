@@ -23,7 +23,7 @@ class CryptoCoinsPrivateAdapter(private val click: CryptoCoinsPrivateClick) :
             Picasso.get().load(coin.coinImg).into(binding.coinImg)
 
             itemView.setOnClickListener {
-                click.clickCoin(binding.radioButton, coin)
+                click.clickCoin(coin)
             }
         }
     }
